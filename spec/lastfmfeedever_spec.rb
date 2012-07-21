@@ -50,7 +50,5 @@ describe LastfmFeedEver, 'が実行する処理' do
       # tag: Last.fm - Track
       res.tagGuids[2].should == "8ffc2c9f-00d3-45fb-866d-62eac2d83ec5"
     end
-    
   end
-
 end
