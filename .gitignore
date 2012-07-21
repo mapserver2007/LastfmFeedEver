@@ -30,4 +30,4 @@ RCSLOG
 SCCS
 _$*
 _svn
-config/evernote.yml
+config/evernote.auth.yml

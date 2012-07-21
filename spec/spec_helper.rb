@@ -9,6 +9,11 @@ module LastfmFeedEver
       path = File.dirname(__FILE__) + "/../config/evernote.yml"
       YAML.load_file(path)
     end
+    
+    def evernote_auth
+      path = File.dirname(__FILE__) + "/../config/evernote.auth.yml"
+      YAML.load_file(path)["auth_token"]
+    end
 
     def feed_config
       path = File.dirname(__FILE__) + "/../config/lastfm.yml"

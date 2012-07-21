@@ -20,9 +20,9 @@ task :heroku_deploy => [:github_push] do
 end
 
 task :heroku_env do
-  config = YAML.load_file(File.dirname(__FILE__) + "/config/evernote.yml")
+  config = YAML.load_file(File.dirname(__FILE__) + "/config/evernote.auth.yml")
   config.each do |key, value|
-    sh "heroku config:add #{key}=#{value}"
+    sh "heroku config:add #{key}='#{value}'"
   end
 end
 

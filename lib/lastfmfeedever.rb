@@ -30,10 +30,16 @@ module LastfmFeedEver
       load_config(path)
     end
     
+    # Evernote認証情報
+    def evernote_auth_token
+      path = File.dirname(__FILE__) + "/../config/evernote.auth.yml"
+      load_config(path)
+    end
+    
     # 起動する
     def run
       feed = LastfmFeedEver::Feed.new(feed_user)
-      evernote = LastfmFeedEver::MyEvernote.new(evernote_config["auth_token"])
+      evernote = LastfmFeedEver::MyEvernote.new(evernote_auth_token)
       ["artist", "track"].each do |method|
         evernote.send("add_#{method}_note", feed.send(method),
           evernote_config["notebook"], evernote_config["#{method}_tags"])

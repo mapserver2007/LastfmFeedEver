@@ -5,6 +5,7 @@ describe LastfmFeedEver, 'が実行する処理' do
   before do
     @evernote_config = LastfmFeedEver.evernote_config
     @feed_config = LastfmFeedEver.feed_config
+    @evernote_auth_token = LastfmFeedEver.evernote_auth
   end
   
   let(:feed) { LastfmFeedEver::Feed.new(@feed_config["user_id"]) }
@@ -21,7 +22,7 @@ describe LastfmFeedEver, 'が実行する処理' do
   
   describe 'Evernoteへの投稿処理' do
     let(:evernote) { 
-      LastfmFeedEver::MyEvernote.new(@evernote_config["auth_token"])
+      LastfmFeedEver::MyEvernote.new(@evernote_auth_token)
     }
     let(:notebook) { "Development" }
     let(:tags_artist) { @evernote_config["artist_tags"] }
