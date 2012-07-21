@@ -25,4 +25,3 @@ task :heroku_env do
     sh "heroku config:add #{key}='#{value}'"
   end
 end
-
