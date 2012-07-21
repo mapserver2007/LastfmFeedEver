@@ -1,0 +1,11 @@
+# evernote authentication token
+auth_token: your auth token
+notebook: Last.fm
+artist_tags: 
+  - Last.fm
+  - Last.fm - Artist
+  - LifeLog
+track_tags:
+  - Last.fm
+  - Last.fm - Track
+  - LifeLog
