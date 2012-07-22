@@ -39,7 +39,7 @@ module LastfmFeedEver
     # 起動する
     def run
       feed = LastfmFeedEver::Feed.new(feed_user)
-      evernote = LastfmFeedEver::MyEvernote.new(evernote_auth_token)
+      evernote = LastfmFeedEver::MyEvernote.new(evernote_auth_token["auth_token"])
       ["artist", "track"].each do |method|
         evernote.send("add_#{method}_note", feed.send(method),
           evernote_config["notebook"], evernote_config["#{method}_tags"])
