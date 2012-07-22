@@ -25,3 +25,7 @@ task :heroku_env do
     sh "heroku config:add #{key}='#{value}'"
   end
 end
+
+task :timezone do
+  sh "heroku config:add TZ=Asia/Tokyo"
+end
