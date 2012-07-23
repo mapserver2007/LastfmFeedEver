@@ -19,7 +19,7 @@ task :heroku_deploy => [:github_push] do
   sh 'git push heroku master'
 end
 
-task :heroku_env do
+task :heroku_env => [:timezone] do
   config = YAML.load_file(File.dirname(__FILE__) + "/config/evernote.auth.yml")
   config.each do |key, value|
     sh "heroku config:add #{key}='#{value}'"
