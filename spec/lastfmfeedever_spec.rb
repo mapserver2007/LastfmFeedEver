@@ -25,8 +25,8 @@ describe LastfmFeedEver, 'が実行する処理' do
       LastfmFeedEver::MyEvernote.new(@evernote_auth_token)
     }
     let(:notebook) { "Development" }
-    let(:tags_artist) { @evernote_config["artist_tags"] }
-    let(:tags_track) { @evernote_config["track_tags"] }
+    let(:tags_artist) { @evernote_config["artist"]["tags"] }
+    let(:tags_track) { @evernote_config["track"]["tags"] }
     
     it "アーティスト用タグへの登録が成功すること" do
       res = evernote.add_artist_note(feed.artist, notebook, tags_artist)
