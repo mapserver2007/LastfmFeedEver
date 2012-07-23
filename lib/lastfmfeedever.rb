@@ -41,8 +41,8 @@ module LastfmFeedEver
       feed = LastfmFeedEver::Feed.new(feed_user)
       evernote = LastfmFeedEver::MyEvernote.new(evernote_auth_token["auth_token"])
       ["artist", "track"].each do |method|
-        evernote.send("add_#{method}_note", feed.send(method),
-          evernote_config["notebook"], evernote_config["#{method}_tags"])
+        config = evernote_config[method]
+        evernote.send("add_#{method}_note", feed.send(method), config["notebook"], config["tags"])
       end
     end
   end

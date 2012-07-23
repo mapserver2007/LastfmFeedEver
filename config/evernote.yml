@@ -1,9 +1,12 @@
-notebook: Last.fm
-artist_tags: 
-  - Last.fm
-  - Last.fm - Artist
-  - LifeLog
-track_tags:
-  - Last.fm
-  - Last.fm - Track
-  - LifeLog
+artist:
+  notebook: Last.fm(アーティスト)
+  tags:
+    - Last.fm
+    - Last.fm - Artist
+    - LifeLog
+track:
+  notebook: Last.fm(トラック)
+  tags:
+    - Last.fm
+    - Last.fm - Artist
+    - LifeLog

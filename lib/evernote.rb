@@ -61,6 +61,7 @@ module LastfmFeedEver
     end
     
     def get_notebook_guid(notebook_name)
+      notebook_name = to_ascii(notebook_name)
       @note_store.listNotebooks(@auth_token).each do |notebook|
         if notebook.name == notebook_name
           return notebook.guid
@@ -69,6 +70,7 @@ module LastfmFeedEver
     end
     
     def get_tag_guid(tag_list)
+      tag_list.map!{|tag| to_ascii(tag)}
       @note_store.listTags(@auth_token).each_with_object [] do |tag, list|
         if tag_list.include? tag.name
           list << tag.guid
