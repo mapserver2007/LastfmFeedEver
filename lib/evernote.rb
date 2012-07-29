@@ -73,16 +73,9 @@ module LastfmFeedEver
       base
     end
     
-    # 収集対象当日のデータを取得する
-    def get_note_in_today(notebook, stack = nil, limit = 100)
-      # 実行時間の1日前のデータ
-      get_note(24.hours.ago, notebook, stack, limit)
-    end
-    
-    # 収集対象前日のデータを取得する
-    def get_note_in_yesterday(notebook, stack = nil, limit = 100)
-      # 実行時間の2日前のデータ
-      get_note(48.hours.ago, notebook, stack, limit)
+    # 前回のデータを取得する
+    def get_note_in_prev(time, notebook, stack = nil, limit = 100)
+      get_note((24 + time).hours.ago, notebook, stack, limit)
     end
     
     private

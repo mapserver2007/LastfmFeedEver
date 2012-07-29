@@ -36,18 +36,37 @@ module LastfmFeedEver
       load_config(path)
     end
     
+    # フィードを取得する
+    def get_feed(kind)
+      feed = LastfmFeedEver::Feed.new(feed_user)
+      # データを加工
+      hashmap = {}
+      feed.send(kind).each_with_index do |obj, i|
+        title = obj[:artist].nil? ? obj[:name] : obj[:name] + " - " + obj[:artist]
+        key = Digest::MD5.hexdigest(title)
+        hashmap[key] = {
+          :rank => i + 1,
+          :title => title,
+          :playcount => obj[:playcount].to_i
+        }
+      end
+      hashmap
+    end
+    
     # 起動する
     def run
-      feed = LastfmFeedEver::Feed.new(feed_user)
       evernote = LastfmFeedEver::MyEvernote.new(evernote_auth_token["auth_token"])
-      # 前日の総合ランキングデータを取得する
-      
-      
-      
-      
       ["artist", "track"].each do |method|
         config = evernote_config[method]
-        evernote.send("add_#{method}_note", feed.send(method), config["notebook"], config["tags"])
+        # 現在のデータを取得
+        #p evernote.get_note_in_today("Last.fm(トラック)")
+        current_data = get_feed(method)
+        # 前日のデータは24+設定時間
+        # 0:00から+何時間で設定されているかを考慮
+        hour = clock_time.split(":")[0].to_i + 1
+        prev_data = evernote.get_note_in_prev(hour, config["notebook"])
+        data = evernote.add_diff(current_data, prev_data)
+        evernote.send("add_#{method}_note", data, config["notebook"], config["tags"])
       end
     end
   end

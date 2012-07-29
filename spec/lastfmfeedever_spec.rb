@@ -29,9 +29,9 @@ describe LastfmFeedEver, 'が実行する処理' do
     let(:tags_track) { @evernote_config["track"]["tags"] }
     
     it "アーティスト用タグへの登録が成功すること" do
-      today_data = evernote.get_note_in_today("Last.fm(アーティスト)")
-      yesterday_data = evernote.get_note_in_yesterday("Last.fm(アーティスト)")
-      data = evernote.add_diff(today_data, yesterday_data)
+      current_data = LastfmFeedEver.get_feed("artist")
+      prev_data = evernote.get_note_in_prev(24, "Last.fm(アーティスト)")
+      data = evernote.add_diff(current_data, prev_data)
       res = evernote.add_artist_note(data, notebook, tags_artist)
       # notebook: Development
       res.notebookGuid.should == "2c2b6d3a-9f5a-48a2-9a40-8d617cc556d7"
@@ -44,9 +44,9 @@ describe LastfmFeedEver, 'が実行する処理' do
     end
     
     it "トラック用タグへの登録が成功すること" do
-      today_data = evernote.get_note_in_today("Last.fm(トラック)")
-      yesterday_data = evernote.get_note_in_yesterday("Last.fm(トラック)")
-      data = evernote.add_diff(today_data, yesterday_data)
+      current_data = LastfmFeedEver.get_feed("track")
+      prev_data = evernote.get_note_in_prev(24, "Last.fm(トラック)")
+      data = evernote.add_diff(current_data, prev_data)
       res = evernote.add_track_note(data, notebook, tags_track)
       # notebook: Development
       res.notebookGuid.should == "2c2b6d3a-9f5a-48a2-9a40-8d617cc556d7"

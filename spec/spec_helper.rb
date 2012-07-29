@@ -1,5 +1,6 @@
 require 'rspec'
 require 'yaml'
+require File.dirname(__FILE__) + "/../lib/lastfmfeedever"
 require File.dirname(__FILE__) + "/../lib/feed"
 require File.dirname(__FILE__) + "/../lib/evernote"
 
