@@ -40,7 +40,7 @@ module LastfmFeedEver
       @data = data
       @notebook = notebook
       @tags = tags
-      @title = to_ascii(Time.now.strftime("%Y年%m月%d日") + "のベストアーティスト")
+      @title = to_ascii(1.day.ago.strftime("%Y年%m月%d日") + "のベストアーティスト")
       add_note
     end
     
@@ -48,7 +48,7 @@ module LastfmFeedEver
       @data = data
       @notebook = notebook
       @tags = tags
-      @title = to_ascii(Time.now.strftime("%Y年%m月%d日") + "のベストトラック")
+      @title = to_ascii(1.day.ago.strftime("%Y年%m月%d日") + "のベストトラック")
       add_note
     end
     
