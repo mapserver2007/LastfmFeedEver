@@ -59,7 +59,6 @@ module LastfmFeedEver
       ["artist", "track"].each do |method|
         config = evernote_config[method]
         # 現在のデータを取得
-        #p evernote.get_note_in_today("Last.fm(トラック)")
         current_data = get_feed(method)
         # 前日のデータは24+設定時間
         # 0:00から+何時間で設定されているかを考慮
