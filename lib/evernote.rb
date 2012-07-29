@@ -106,7 +106,6 @@ module LastfmFeedEver
         created_at = note.created.to_s
         unix_time = created_at.slice(0, created_at.length - 3)
         note_date = Time.at(unix_time.to_f)
-        p note_date
         # 指定日とノートの日付が一致する場合のみ処理
         if note_date.strftime("%Y%m%d") == local_date.strftime("%Y%m%d")
           content = @note_store.getNoteContent(@auth_token, note.guid)
