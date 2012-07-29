@@ -4,7 +4,7 @@ require 'feed'
 require 'evernote'
 
 module LastfmFeedEver
-  VERSION = '0.0.1'
+  VERSION = '0.0.2'
   
   class << self
     # 設定のロード
@@ -40,6 +40,11 @@ module LastfmFeedEver
     def run
       feed = LastfmFeedEver::Feed.new(feed_user)
       evernote = LastfmFeedEver::MyEvernote.new(evernote_auth_token["auth_token"])
+      # 前日の総合ランキングデータを取得する
+      
+      
+      
+      
       ["artist", "track"].each do |method|
         config = evernote_config[method]
         evernote.send("add_#{method}_note", feed.send(method), config["notebook"], config["tags"])

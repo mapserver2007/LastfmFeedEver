@@ -4,7 +4,7 @@ require 'lastfmfeedever'
 require 'rspec/core/rake_task'
 require 'yaml'
 
-task:default => [:spec, :github_push, :heroku_deploy]
+task:default => [:spec, :github_push, :heroku_deploy, :clockwork_start]
 
 Rspec::Core::RakeTask.new(:spec) do |spec|
   spec.pattern = 'spec/**/*_spec.rb'
@@ -17,6 +17,10 @@ end
 
 task :heroku_deploy => [:github_push] do
   sh 'git push heroku master'
+end
+
+task :clockwork_start => [:heroku_deploy] do
+  sh 'heroku scale clock=1'
 end
 
 task :heroku_env => [:timezone] do

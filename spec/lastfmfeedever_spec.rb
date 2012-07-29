@@ -29,7 +29,10 @@ describe LastfmFeedEver, 'が実行する処理' do
     let(:tags_track) { @evernote_config["track"]["tags"] }
     
     it "アーティスト用タグへの登録が成功すること" do
-      res = evernote.add_artist_note(feed.artist, notebook, tags_artist)
+      today_data = evernote.get_note_in_today("Last.fm(アーティスト)")
+      yesterday_data = evernote.get_note_in_yesterday("Last.fm(アーティスト)")
+      data = evernote.add_diff(today_data, yesterday_data)
+      res = evernote.add_artist_note(data, notebook, tags_artist)
       # notebook: Development
       res.notebookGuid.should == "2c2b6d3a-9f5a-48a2-9a40-8d617cc556d7"
       # tag: Last.fm
@@ -41,7 +44,10 @@ describe LastfmFeedEver, 'が実行する処理' do
     end
     
     it "トラック用タグへの登録が成功すること" do
-      res = evernote.add_track_note(feed.track, notebook, tags_track)
+      today_data = evernote.get_note_in_today("Last.fm(トラック)")
+      yesterday_data = evernote.get_note_in_yesterday("Last.fm(トラック)")
+      data = evernote.add_diff(today_data, yesterday_data)
+      res = evernote.add_track_note(data, notebook, tags_track)
       # notebook: Development
       res.notebookGuid.should == "2c2b6d3a-9f5a-48a2-9a40-8d617cc556d7"
       # tag: Last.fm
