@@ -75,7 +75,7 @@ module LastfmFeedEver
     
     # 前回のデータを取得する
     def get_note_in_prev(time, notebook, stack = nil, limit = 100)
-      get_note((24 + time).hours.ago, notebook, stack, limit)
+      get_note(1.day.ago, notebook, stack, limit)
     end
     
     private
@@ -94,25 +94,29 @@ module LastfmFeedEver
       local_date = Time.local(date.year, date.month, date.day)
       
       hashmap = {}
-      note_list.notes.each do |note|
+      # 日付が一致しない場合は最新のデータを比較対象とする
+      note = note_list.notes[0] 
+      # 日付の一致したデータを取得
+      note_list.notes.each do |note_|
         # 末尾3桁が0で埋まっているので除去する
         created_at = note.created.to_s
         unix_time = created_at.slice(0, created_at.length - 3)
         note_date = Time.at(unix_time.to_f)
-        # 指定日とノートの日付が一致する場合のみ処理
         if note_date.strftime("%Y%m%d") == local_date.strftime("%Y%m%d")
-          content = @note_store.getNoteContent(@auth_token, note.guid)
-          Nokogiri::XML(content).search("div").each do |elem|
-            if /(\d+):\s(.*)\((\d+)\)/ =~ elem.text
-              key = Digest::MD5.hexdigest($2)
-              hashmap[key] = {
-                :rank => $1.to_i,
-                :title => $2,
-                :playcount => $3.to_i
-              }
-            end
-          end
+          note = note_
           break
+        end
+      end
+      
+      content = @note_store.getNoteContent(@auth_token, note.guid)
+      Nokogiri::XML(content).search("div").each do |elem|
+        if /(\d+):\s(.*)\((\d+)\)/ =~ elem.text
+          key = Digest::MD5.hexdigest($2)
+          hashmap[key] = {
+            :rank => $1.to_i,
+            :title => $2,
+            :playcount => $3.to_i
+          }
         end
       end
       hashmap

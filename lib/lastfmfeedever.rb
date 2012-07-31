@@ -4,7 +4,7 @@ require 'feed'
 require 'evernote'
 
 module LastfmFeedEver
-  VERSION = '0.0.2'
+  VERSION = '0.0.3'
   
   class << self
     # 設定のロード
