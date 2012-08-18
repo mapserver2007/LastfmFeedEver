@@ -154,25 +154,32 @@ module LastfmFeedEver
     def create_content(list)
       # 再生回数が多い順に降順ソート
       list = list.sort_by {|k, v| v[:playcount] * -1}.inject [] do |daily_notes, note|
-        obj = note[1]
-        # ハッシュを文字列にしてリストに格納する
-        if obj[:rank_diff].nil? || obj[:playcount_diff].nil? || obj[:prev_rank].nil?
-          daily_notes << "#{obj[:title]}(#{obj[:playcount]})(new!)"
-        else
-          daily_notes << "#{obj[:title]}(#{obj[:playcount]})" +
-                         "(再生回数:+#{obj[:playcount_diff]})" +
-                         "(前回順位:#{(obj[:prev_rank])})" +
-                         "(#{rank_symbol(obj[:rank_diff])})"
-        end
+        daily_notes << note[1]
       end
       
       xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + 
       "<!DOCTYPE en-note SYSTEM \"http://xml.evernote.com/pub/enml.dtd\">" +
       "<en-note>%s</en-note>"
-      rank = 1
-      xml % (list.each_with_object "" do |text, html|
+      
+      rank = same_rank_count = prev_playcount = 0
+      xml % (list.each_with_object "" do |obj, html|
+        text = nil
+        if obj[:rank_diff].nil? || obj[:playcount_diff].nil? || obj[:prev_rank].nil?
+          text = "#{obj[:title]}(#{obj[:playcount]})(new!)"
+        else
+          text = "#{obj[:title]}(#{obj[:playcount]})" +
+                 "(再生回数:+#{obj[:playcount_diff]})" +
+                 "(前回順位:#{(obj[:prev_rank])})" +
+                 "(#{rank_symbol(obj[:rank_diff])})"
+        end
+        if obj[:playcount] != prev_playcount
+          rank += same_rank_count + 1
+          same_rank_count = 0
+        else
+          same_rank_count += 1
+        end
         html << "<div><![CDATA[#{rank}: #{to_ascii(text)}]]></div>"
-        rank += 1
+        prev_playcount = obj[:playcount]
       end)
     end
     

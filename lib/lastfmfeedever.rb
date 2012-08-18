@@ -4,7 +4,7 @@ require 'feed'
 require 'evernote'
 
 module LastfmFeedEver
-  VERSION = '0.0.3'
+  VERSION = '0.0.4'
   
   class << self
     # 設定のロード
@@ -55,18 +55,27 @@ module LastfmFeedEver
     
     # 起動する
     def run
-      evernote = LastfmFeedEver::MyEvernote.new(evernote_auth_token["auth_token"])
+      auth_token = evernote_auth_token["auth_token"]
+      evernote = MyEvernote.new(auth_token)
+      MyLogger.auth_token = auth_token
+      MyLogger.info("logging start.")
       ["artist", "track"].each do |method|
+        MyLogger.info("#{method} execute.")
         config = evernote_config[method]
         # 現在のデータを取得
         current_data = get_feed(method)
+        MyLogger.info("#{method} feed bytesize: #{current_data.to_s.bytesize}")
+        MyLogger.debug("#{method} feed data: #{current_data.to_s}")
         # 前日のデータは24+設定時間
         # 0:00から+何時間で設定されているかを考慮
         hour = clock_time.split(":")[0].to_i + 1
         prev_data = evernote.get_note_in_prev(hour, config["notebook"])
+        MyLogger.info("#{method} prev bytesize: #{prev_data.to_s.bytesize}")
+        MyLogger.debug("#{method} prev data: #{prev_data.to_s}")
         data = evernote.add_diff(current_data, prev_data)
         evernote.send("add_#{method}_note", data, config["notebook"], config["tags"])
       end
+      MyLogger.info("logging end.")
     end
   end
 end
