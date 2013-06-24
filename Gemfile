@@ -1,4 +1,4 @@
-source :rubygems
+source 'https://rubygems.org'
 gem 'rspec', '>=2.10.0'
 gem 'clockwork'
 gem 'nokogiri'

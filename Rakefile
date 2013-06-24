@@ -23,13 +23,27 @@ task :clockwork_start => [:heroku_deploy] do
   sh 'heroku scale clock=1'
 end
 
-task :heroku_env => [:timezone] do
+task :heroku_env => [:heroku_env_clean, :timezone] do
   config = YAML.load_file(File.dirname(__FILE__) + "/config/evernote.auth.yml")
   config.each do |key, value|
     sh "heroku config:add #{key}='#{value}'"
   end
 end
 
+task :heroku_env_clean do
+  config.each do |key, value|
+    sh "heroku config:remove #{key}"
+  end
+end
+
 task :timezone do
   sh "heroku config:add TZ=Asia/Tokyo"
+end
+
+task :heroku_start do
+  sh "heroku scale clock=1"
+end
+
+task :heroku_stop do
+  sh "heroku scale clock=0"
 end
